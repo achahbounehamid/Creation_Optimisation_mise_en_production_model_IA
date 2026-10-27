@@ -1,7 +1,10 @@
 fastapi
+fastapi
 uvicorn
 pydantic
-tensorflow
+tensorflow==2.22.0rc0
+keras-nightly
+h5py
 joblib
 scikit-learn
 pyyaml

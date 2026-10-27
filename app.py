@@ -11,14 +11,24 @@ app = FastAPI(title="Movie Classification API", version="1.0")
 # 1. Chargement unique des artefacts au démarrage de l'API
 MODEL_DIR = "model"
 
-try:
-    model = tf.keras.models.load_model(os.path.join(MODEL_DIR, "model.keras"))
-    vectorizer = joblib.load(os.path.join(MODEL_DIR, "vectoriseur.joblib"))
-    with open(os.path.join(MODEL_DIR, "metrics.json"), "r", encoding="utf-8") as f:
-        metrics_data = json.load(f)
-        model_version = metrics_data.get("model_version", "1.0")
-except Exception as e:
-    print(f"Erreur lors du chargement des artefacts : {e}")
+# Re-création propre de l'architecture du modèle (évite les conflits de sérialisation)
+model = tf.keras.Sequential([
+    tf.keras.layers.Input(shape=(5000,)),
+    tf.keras.layers.Dense(128, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
+    tf.keras.layers.Dropout(0.4),
+    tf.keras.layers.Dense(128, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
+    tf.keras.layers.Dropout(0.4),
+    tf.keras.layers.Dense(1, activation='sigmoid')
+])
+
+# Chargement uniquement des poids (weights)
+model.load_weights(os.path.join(MODEL_DIR, "model.h5"))
+
+vectorizer = joblib.load(os.path.join(MODEL_DIR, "vectoriseur.joblib"))
+
+with open(os.path.join(MODEL_DIR, "metrics.json"), "r", encoding="utf-8") as f:
+    metrics_data = json.load(f)
+    model_version = metrics_data.get("model_version", "1.0")
 
 # Définition du format de la requête entrante
 class MovieRequest(BaseModel):
