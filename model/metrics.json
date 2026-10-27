@@ -1,0 +1,10 @@
+{
+    "model_version": "1.0",
+    "test_f1_score": 0.8455591359154905,
+    "test_size": 469,
+    "library_versions": {
+        "tensorflow": "2.21.0",
+        "scikit-learn": "1.6.1",
+        "numpy": "2.1.3"
+    }
+}
