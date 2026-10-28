@@ -84,3 +84,8 @@ def predict_movie(request: MovieRequest):
             status_code=500, 
             detail=f"Erreur interne lors de la prédiction : {str(e)}"
         )
+
+# la route hello
+@app.get("/hello")
+def hello():
+    return {"message": "hello depuis la version déployée sur Azure"}
