@@ -11,7 +11,7 @@ def validate_model_quality():
     with open(config_path, "r", encoding="utf-8") as f:
         config = yaml.safe_load(f)
     
-    min_f1 = config.get("min_f1_score", 0.60)
+    min_f1 = config.get("min_f1_score", 0.99)
     min_size = config.get("min_test_size", 50)
     
     # 2. Charger les métriques du modèle
@@ -23,6 +23,7 @@ def validate_model_quality():
         metrics = json.load(f)
     
     actual_f1 = metrics.get("test_f1_score", 0.0)
+
     actual_size = metrics.get("test_size", 0)
     
     print(f"--- Évaluation de la Barrière Qualité ---")
